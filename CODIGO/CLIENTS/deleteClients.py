@@ -11,7 +11,7 @@ sys.path.append(str(path_root))
 from CODIGO.BD import queryFunctions
 
 
-valores = queryFunctions.selectBD('SELECT nombre as NOMBRE, cif AS CIF, telefono AS TELEFONO, email AS EMAIL, direccion AS DIRECCION, cuentabanco AS "CUENTA BANCARIA" FROM proveedores')
+valores = queryFunctions.selectBD('SELECT nombre as NOMBRE, telefono AS TELEFONO, correoelectronico AS EMAIL, direccion AS DIRECCION FROM clientes')
 print(valores.to_dict())
 
 sg.theme('DarkGrey6')
