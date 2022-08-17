@@ -1,3 +1,4 @@
+import subprocess
 import PySimpleGUI as sg
 import io
 import os
@@ -7,6 +8,7 @@ import sys
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
 
+absolutepath = os.path.abspath(__file__)
 
 from CODIGO.BD import queryFunctions
 
@@ -49,3 +51,7 @@ while True:
 
     elif event == 'backToMenu':
         print('Back to menu')
+        window.close()
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENUS\\menuClientes.py')])
+
+        

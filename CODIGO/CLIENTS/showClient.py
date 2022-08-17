@@ -1,4 +1,5 @@
 from email.policy import default
+import pandas as pd
 import io
 import os
 import shutil
@@ -19,7 +20,9 @@ sg.theme('Dark Amber')
 
 try:
     clientes = queryFunctions.selectBD('SELECT * FROM clientes')
-
+    if clientes.empty:
+        clientes = {'nombre': ['NO DATA'], 'telefono': ['NO DATA'], 'direccion': ['NO DATA'],'correoelectronico': ['NO DATA']}
+        clientes= pd.DataFrame(clientes)
 except Exception as ex:
     sg.Popup('Error al recuperar los clientes de la base de datos')
     
@@ -64,15 +67,16 @@ layout = [[
     ],[
         sg.Column(layout=[
             [sg.Text('CLIENT NAME:')],
-            [sg.InputText(key='clientName', readonly=True, use_readonly_for_disable=True, default_text=clientes.iloc[contador]['nombre'])],
+            [sg.InputText(key='clientName', readonly=True, disabled_readonly_background_color='#705e52', use_readonly_for_disable=True, default_text=clientes.iloc[contador]['nombre'])],
             [sg.Text('PHONE NUMBER:')],
-            [sg.InputText(key='clientPhone', readonly=True, default_text=clientes.iloc[contador]['telefono'])],
+            [sg.InputText(key='clientPhone', readonly=True, disabled_readonly_background_color='#705e52', default_text=clientes.iloc[contador]['telefono'])],
             [sg.Text('CLIENT ADDRESS:')],
-            [sg.InputText(key='clientAddress', readonly=True, default_text=clientes.iloc[contador]['direccion'])],
+            [sg.InputText(key='clientAddress', readonly=True, disabled_readonly_background_color='#705e52', default_text=clientes.iloc[contador]['direccion'])],
             [sg.Text('CLIENT EMAIL:')],
-            [sg.InputText(key='clientEmail', readonly=True, default_text=clientes.iloc[contador]['correoelectronico'])],
+            [sg.InputText(key='clientEmail', readonly=True, disabled_readonly_background_color='#705e52', default_text=clientes.iloc[contador]['correoelectronico'])],
             [sg.Column(layout=[[sg.Button('PREVIOUS', key='previousClient', size=(10,1)), sg.Text(f'{contador + 1} of {maxItems}',key='clientCount'),sg.Button('NEXT', key='nextClient', size=(10,1))]])],
-            [sg.Button('DELETE',size=(10,1), button_color=('white','red'))]
+            [sg.Button('BACK TO MENU', key='backToMenu', size=(20,1))]
+
         ], element_justification='c')
         ]
     ]
