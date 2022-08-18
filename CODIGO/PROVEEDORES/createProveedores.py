@@ -2,6 +2,7 @@ import io
 import os
 import shutil
 import sqlite3
+import subprocess
 import PySimpleGUI as sg
 from pathlib import Path
 import sys
@@ -75,10 +76,13 @@ layout = [[
             [sg.InputText(key='providerBank')],
             [sg.Button("ADD PROVIDER", key='addProvider', size=(20,1))]
         ], element_justification='c')
+    ],
+    [
+        sg.Button("BACK TO MENU", key='backMenu', size=(20,1), pad=(10,10,10,1))
     ]
 ]]
 
-window = sg.Window('CREATE PROVIDER', layout, size=(700,400), element_justification='c')
+window = sg.Window('CREATE PROVIDER', layout, size=(700,440), element_justification='c')
 
 while True:             
     event, values = window.read()
@@ -114,3 +118,6 @@ while True:
             except Exception as ex:
                 logs.error(ex.args)
         
+    elif event == 'backMenu':
+        window.close()
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENUS\\menuProveedores.py')])

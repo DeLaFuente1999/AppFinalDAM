@@ -3,6 +3,7 @@ import io
 import os
 import shutil
 import sqlite3
+import subprocess
 from turtle import color
 import PySimpleGUI as sg
 from PIL import Image
@@ -10,7 +11,8 @@ from pathlib import Path
 import sys
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
-
+import pandas as pd
+absolutepath = os.path.abspath(__file__)
 
 from CODIGO.LOGS import logs
 from CODIGO.BD import queryFunctions
@@ -19,6 +21,11 @@ sg.theme('DarkGrey6')
 
 try:
     proveedores = queryFunctions.selectBD('SELECT * FROM proveedores')
+    
+    if proveedores.empty:
+        proveedores = {'nombre': ['NO DATA'], 'cif': ['NO DATA'], 'telefono': ['NO DATA'],'email': ['NO DATA'], 'direccion': ['NO DATA'], 'cuentabanco': ['NO DATA']}
+        proveedores = pd.DataFrame(proveedores)        
+
 
 except Exception as ex:
     sg.Popup('Error al recuperar los proveedores de la base de datos')
@@ -76,8 +83,10 @@ layout = [[
             [sg.Text('CLIENT EMAIL:')],
             [sg.InputText(key='providerAccount', disabled_readonly_background_color='#705e52', readonly=True, default_text=proveedores.iloc[contador]['cuentabanco'])],
             [sg.Column(layout=[[sg.Button('PREVIOUS', key='previousProvider', size=(10,1)), sg.Text(f'{contador + 1} of {maxItems}',key='providerCount'),sg.Button('NEXT', key='nextProvider', size=(10,1))]])],
-            [sg.Button('DELETE',size=(10,1), button_color=('white','red'))]
         ], element_justification='c')
+        ],
+        [
+            sg.Button('BACK TO MENU', key='backMenu', size=(20,1), pad=(10,10,10,1))
         ]
     ]
 ]
@@ -101,4 +110,6 @@ while True:
     elif event == 'previousProvider':
         showLastProvider()
         window['providerCount'].update(f'{contador + 1} of {maxItems}')
-        
+    elif event == 'backMenu':
+        window.close()
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENUS\\menuProveedores.py')])

@@ -2,6 +2,7 @@ import io
 import os
 import shutil
 import sqlite3
+import subprocess
 import PySimpleGUI as sg
 from PIL import Image
 from pathlib import Path
@@ -96,13 +97,15 @@ layout = [[
             [sg.InputText(key='productPrice', enable_events=True)],
             [sg.Text('DESCRIPTION:')],
             [sg.InputText(key='productDescription')],
-            [sg.Button("ADD PRODUCT", key='addProduct', size=(20,1))]
+            [sg.Button("ADD PRODUCT", key='addProduct', size=(20,1), pad=(10,10,10,1))]
         ], element_justification='c')
         ,sg.Column(layout=[
             [sg.Image(source=setImagen(os.path.join(folderpath, '..\\..\\RESOURCES\\BaseImages\\BaseImageProducts.jpg')), key='imagen',size=(250,250), )],
             [sg.FileBrowse(button_text='SELECT IMAGE', key='test', enable_events=True)]
             ], element_justification='c')
-        ]
+    ],[
+        sg.Button("BACK TO MENU", key="backMenu", size=(20,1))
+    ]
     ]
 ]
 
@@ -153,3 +156,6 @@ while True:
             except Exception as ex:
                 logs.error(ex.args)
         
+    elif event == 'backMenu':
+        window.close()
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENUS\\menuProductos.py')])

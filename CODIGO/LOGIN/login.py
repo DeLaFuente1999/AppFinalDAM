@@ -2,9 +2,12 @@ import sqlite3
 import subprocess
 import PySimpleGUI as sg
 import os
+import tempfile
+
 
 absolutepath = os.path.abspath(__file__)
 bd = os.path.join(absolutepath, '..\\..\\..\\CODIGO\\BD\\emz.db')
+tempFolder = tempfile.gettempdir()
 
 sg.theme('DarkAmber')
 
@@ -16,7 +19,7 @@ def loginApp():
         print("Connected to SQLite")
 
 
-        sqlite_select_query = """SELECT username, password FROM USUARIOS where username = "%s" AND password = "%s" """
+        sqlite_select_query = """SELECT username, password, tipouser FROM USUARIOS where username = "%s" AND password = "%s" """
         sqlite_select_query = sqlite_select_query % (values['usernameText'], values['passwordText'])
         print(sqlite_select_query)
 
@@ -27,6 +30,17 @@ def loginApp():
 
         if len(records) > 0:
             sg.popup("Bienvenido, %s" % values['usernameText'])
+                        
+            if os.path.isfile(os.path.join(tempFolder, 'login.txt')):            
+                f = open(os.path.join(tempFolder, 'login.txt'), "w")
+                f.write(str(records[0][2]))
+                f.close()
+            else:
+                f = open(os.path.join(tempFolder, 'login.txt'), "x")
+                f.write(str(records[0][2]))
+                f.close()
+            
+            
             window.close()
             subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENU\\mainMenu.py')])
 

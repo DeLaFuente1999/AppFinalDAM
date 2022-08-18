@@ -1,5 +1,7 @@
 from email.policy import default
 from genericpath import isfile
+import subprocess
+import pandas as pd
 import io
 import os
 import shutil
@@ -25,6 +27,9 @@ sg.theme('Dark Amber')
 
 try:
     productos = queryFunctions.selectBD('SELECT * FROM productos')
+    if productos.empty:
+        productos = {'nombre': ['NO DATA'], 'descripcion': ['NO DATA'], 'referencia': ['NO DATA'],'precio': ['NO DATA'], 'image': ['NO DATA'], 'proveedorCif': ['NO DATA']}
+        productos= pd.DataFrame(productos)        
 
 except Exception as ex:
     sg.Popup('Error al recuperar los productos de la base de datos')
@@ -105,12 +110,12 @@ layout = [[
             [sg.Text('PRODUCT PROVIDER:')],
             [sg.InputText(key='productCif', disabled_readonly_background_color='#705e52', readonly=True, default_text=productos.iloc[contador]['proveedorCif'])],
             [sg.Column(layout=[[sg.Button('PREVIOUS', key='previousProduct', size=(10,1)), sg.Text(f'{contador + 1} of {maxItems}',key='productCount'),sg.Button('NEXT', key='nextProduct', size=(10,1))]])],
-            [sg.Button('DELETE',size=(10,1), button_color=('white','red'))]
         ], element_justification='c')
         ,sg.Column(layout=[
             [sg.Image(source=setImagen(os.path.join(folderpath, '..\\..\\DATA\\' + productos.iloc[contador]['image'])), key='imagen',size=(250,250), )]
             ], element_justification='c')
-        ]
+        ],
+        [sg.Button('BACK TO MENU', key='backMenu', size=(20,1), pad=(10,10,10,1))]
         ],
         
     ]
@@ -134,4 +139,6 @@ while True:
     elif event == 'previousProduct':
         showLastProduct()
         window['productCount'].update(f'{contador + 1} of {maxItems}')
-        
+    elif event == 'backMenu':
+        window.close()
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENUS\\menuProductos.py')])

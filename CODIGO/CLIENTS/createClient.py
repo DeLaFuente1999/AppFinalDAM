@@ -2,6 +2,7 @@ import io
 import os
 import shutil
 import sqlite3
+import subprocess
 import PySimpleGUI as sg
 from PIL import Image
 from pathlib import Path
@@ -61,12 +62,13 @@ layout = [[
             [sg.InputText(key='clientAddress')],
             [sg.Text('CLIENT EMAIL:')],
             [sg.InputText(key='clientEmail')],
-            [sg.Button("ADD CLIENT", key='addClient', size=(20,1))]
+            [sg.Button("ADD CLIENT", key='addClient', size=(20,1))],
+            [sg.Button("BACK TO MENU", key='backMenu', pad=(10,10,10,0), size=(20,1))]
         ], element_justification='c')]
     ]
 ]
 
-window = sg.Window('CREATE CLIENT', layout, size=(700,300), element_justification='c')
+window = sg.Window('CREATE CLIENT', layout, size=(700,340), element_justification='c')
 
 while True:             
     event, values = window.read()
@@ -98,4 +100,6 @@ while True:
                 
             except Exception as ex:
                 logs.error(ex.args)
-        
+    elif event == 'backMenu':
+        window.close()
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENUS\\menuClientes.py')])

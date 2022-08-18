@@ -1,7 +1,10 @@
 from email.policy import default
+import subprocess
 import pandas as pd
 import io
+
 import os
+absolutepath = os.path.abspath(__file__)
 import shutil
 import sqlite3
 from turtle import color
@@ -75,7 +78,7 @@ layout = [[
             [sg.Text('CLIENT EMAIL:')],
             [sg.InputText(key='clientEmail', readonly=True, disabled_readonly_background_color='#705e52', default_text=clientes.iloc[contador]['correoelectronico'])],
             [sg.Column(layout=[[sg.Button('PREVIOUS', key='previousClient', size=(10,1)), sg.Text(f'{contador + 1} of {maxItems}',key='clientCount'),sg.Button('NEXT', key='nextClient', size=(10,1))]])],
-            [sg.Button('BACK TO MENU', key='backToMenu', size=(20,1))]
+            [sg.Button('BACK TO MENU', key='backMenu', size=(20,1))]
 
         ], element_justification='c')
         ]
@@ -101,4 +104,6 @@ while True:
     elif event == 'previousClient':
         showLastClient()
         window['clientCount'].update(f'{contador + 1} of {maxItems}')
-        
+    elif event == 'backMenu':
+        window.close()  
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENUS\\menuClientes.py')])
