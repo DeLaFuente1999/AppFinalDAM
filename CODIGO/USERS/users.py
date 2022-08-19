@@ -24,6 +24,46 @@ def getValores():
    
     return valoresSalida
 
+
+def processAction(nombre, id):
+    if nombre == 'MODIFY USER':
+        if id == -1:
+            sg.popup('You must select a user on the table!')
+        else:    
+            queryupdate = 'UPDATE USUARIOS SET %s WHERE ID = %s'
+            
+            camposQuery = 'tipouser = %s' % 1 if values['tipouser'] == 'TRUE' else 'tipouser = 2'
+            
+            if values['nombre'] != '':
+                camposQuery += ', nombre = "%s"' % values['nombre']
+            
+            if values['apellidos'] != '':
+                camposQuery += ', apellidos = "%s"' % values['apellidos']
+            
+            if values['username'] != '':
+                camposQuery += ', username = "%s"' % values['username']
+            
+            if values['correo'] != '':
+                camposQuery += ', correo = "%s"' % values['correo']
+            
+            if values['password'] != '':
+                camposQuery += ', password = "%s"' % values['password']
+
+            queryupdate = queryupdate % (camposQuery, id)
+            
+            queryFunctions.updateBD(queryupdate)
+                    
+    elif nombre == 'ADD USER':
+        if values['nombre'] != None and values['apellidos'] != None and  values['username'] != None and  values['password'] != None and  values['tipouser'] != None and  values['correo']  != None:
+            try:
+                queryInsert = 'INSERT INTO USUARIOS (NOMBRE, APELLIDOS, CORREO, USERNAME, PASSWORD, TIPOUSER) VALUES ("%s","%s","%s","%s","%s",%s)' % (values['nombre'], values['apellidos'], values['correo'] ,values['username'] ,values['password'] , 1 if values['tipouser'] == 'TRUE' else 2)
+                queryFunctions.updateBD(queryInsert)
+                sg.Popup('User added')
+            except Exception as ex:
+                sg.Popup('Error adding the user')
+        else:
+            sg.Popup('All fields must be filled')
+
 sg.theme('DarkGrey6')
 
 layout = [
@@ -32,11 +72,11 @@ layout = [
     [
         sg.Column(key='valores', layout=[
             [sg.Text('NAME', justification='center', size=(40,1)), sg.Text('SURNAME', justification='center', size=(40,1))],
-            [sg.InputText(), sg.InputText()],
+            [sg.InputText(key='nombre'), sg.InputText(key='apellidos')],
             [sg.Text('MAIL', justification='center', size=(40,1)), sg.Text('USERNAME', justification='center', size=(40,1))],
-            [sg.InputText(), sg.InputText()],
+            [sg.InputText(key='correo'), sg.InputText(key='username')],
             [sg.Text('PASSWORD', justification='center', size=(40,1)), sg.Text('', justification='center', size=(40,1))],
-            [sg.InputText(), sg.Combo(values=['TRUE', 'FALSE'], default_value='FALSE', size=(43,1))],
+            [sg.InputText(key='password'), sg.Combo(values=['TRUE', 'FALSE'], default_value='FALSE', size=(43,1), key='tipouser')],
         ])
     ],
     [
@@ -78,3 +118,6 @@ while True:
         window['modify'].update(True)
         window['add'].update(False)
         window['processAction'].update('MODIFY USER')
+    elif event == 'processAction':        
+        processAction(window['processAction'].get_text(), getValores().values.tolist()[values['table'][0]][0] if values['table'] else -1)
+        window['table'].update(getValores().values.tolist())

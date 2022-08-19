@@ -73,3 +73,5 @@ while True:
         launchMenuProveedores()
     elif event == 'menuFacturas':
         print(1)
+    elif event == 'usuarios':
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\USERS\\users.py')])
