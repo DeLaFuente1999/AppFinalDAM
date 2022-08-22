@@ -72,6 +72,8 @@ while True:
         window.close()
         launchMenuProveedores()
     elif event == 'menuFacturas':
+        window.close()
+        subprocess.call(['python', os.path.join(absolutepath, '..\\..\\FACTURAS\\facturas.py')])
         print(1)
     elif event == 'usuarios':
         subprocess.call(['python', os.path.join(absolutepath, '..\\..\\USERS\\users.py')])
