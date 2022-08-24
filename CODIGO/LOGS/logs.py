@@ -15,8 +15,6 @@ def resetLogFile():
     f = open(os.path.join(absolutepath, '..\\..\\..\\CODIGO\\LOGS\\logs.log'), "w")
     f.write("")
     f.close()
-    print("LOGS FILE WIPED")
-
 
 def newExecution():
     """
@@ -25,7 +23,6 @@ def newExecution():
     f = open(os.path.join(absolutepath, '..\\..\\..\\CODIGO\\LOGS\\logs.log'), "a")
     f.write(f"{date} - APP LAUNCH - WELCOME TO E MANAGEMENT Z \r")
     f.close()
-    print(f"{date} - APP LAUNCH - WELCOME TO E MANAGEMENT Z")
 
 
 def info(valor):
@@ -35,7 +32,6 @@ def info(valor):
     f = open(os.path.join(absolutepath, '..\\..\\..\\CODIGO\\LOGS\\logs.log'), "a")
     f.write(f"{date} - (INFORMATION) - {valor} \r")
     f.close()
-    print(f"{date} - (INFORMATION) - {valor}")
 
 
 def warning(valor):
@@ -45,7 +41,6 @@ def warning(valor):
     f = open(os.path.join(absolutepath, '..\\..\\..\\CODIGO\\LOGS\\logs.log'), "a")
     f.write(f"{date} - (WARNING) - {valor} \r")
     f.close()
-    print(f"{date} - (WARNING) - {valor}")
 
 
 def error(valor):
@@ -55,7 +50,6 @@ def error(valor):
     f = open(os.path.join(absolutepath, '..\\..\\..\\CODIGO\\LOGS\\logs.log'), "a")
     f.write(f"{date} - (ERROR) - {valor} \r")
     f.close()
-    print(f"{date} - (ERROR) - {valor}")
 
 
 def critico(valor):
@@ -65,5 +59,4 @@ def critico(valor):
     f = open(os.path.join(absolutepath, '..\\..\\..\\CODIGO\\LOGS\\logs.log'), "a")
     f.write(f"{date} - (CRITICAL) - {valor} \r")
     f.close()
-    print(f"{date} - (CRITICAL) - {valor}")
 

@@ -17,7 +17,7 @@ from CODIGO.LOGS import logs
 from CODIGO.BD import queryFunctions
 
 
-sg.theme('DarkAmber')
+sg.theme('DarkGrey6')
 
 absolutepath = os.path.abspath(__file__)
 folderpath = os.path.dirname(absolutepath)
@@ -39,20 +39,14 @@ def limpiarCampos():
 def insertDBValues(datos):
     try:
         sqliteConnection = sqlite3.connect(bd)
-        print(sqliteConnection)
         cursor = sqliteConnection.cursor()
-        print("Connected to SQLite")
         
-
         sqlite_select_query = "INSERT INTO proveedores (nombre, cif, telefono, email, direccion, cuentabanco) values ( '%s','%s','%s','%s','%s','%s' )" % (datos[0],datos[1],datos[2],datos[3],datos[4],datos[5])
-        print(sqlite_select_query)
 
         cursor.execute(sqlite_select_query)
         sqliteConnection.commit()
         cursor.close()
         
-        print('INSERTADO CON EXITO')
-
     except Exception as ex:
         print(str(ex))
 
@@ -82,7 +76,7 @@ layout = [[
     ]
 ]]
 
-window = sg.Window('CREATE PROVIDER', layout, size=(700,440), element_justification='c')
+window = sg.Window('CREATE PROVIDER', layout, size=(700,440), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 while True:             
     event, values = window.read()

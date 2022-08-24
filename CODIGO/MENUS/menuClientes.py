@@ -4,6 +4,7 @@ import sys
 import subprocess
 import PySimpleGUI as sg
 
+sg.theme('DarkGrey6')
 
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
@@ -36,7 +37,7 @@ layout = [[
 ]
 
 
-window = sg.Window('CLIENTS', layout, size=(600,250), element_justification='c')
+window = sg.Window('CLIENTS', layout, size=(600,250), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 
 while True:             

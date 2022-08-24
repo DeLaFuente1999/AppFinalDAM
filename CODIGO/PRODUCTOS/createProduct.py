@@ -64,20 +64,14 @@ def limpiarCampos():
 def insertDBValues(datos):
     try:
         sqliteConnection = sqlite3.connect(bd)
-        print(sqliteConnection)
         cursor = sqliteConnection.cursor()
-        print("Connected to SQLite")
-        
 
         sqlite_select_query = "INSERT INTO productos (nombre, descripcion, proveedorCif, referencia, precio, image) values ( '%s','%s','%s','%s',%s,'%s' )" % (datos[0],datos[1],datos[2],datos[3],datos[4],datos[5])
-        print(sqlite_select_query)
 
         cursor.execute(sqlite_select_query)
         sqliteConnection.commit()
         cursor.close()
         
-        print('INSERTADO CON EXITO')
-
     except Exception as ex:
         print(str(ex))
 
@@ -109,7 +103,7 @@ layout = [[
     ]
 ]
 
-window = sg.Window('CREAR PRODUCTO', layout, size=(700,400), element_justification='c')
+window = sg.Window('CREAR PRODUCTO', layout, size=(700,400), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 while True:             
     event, values = window.read()

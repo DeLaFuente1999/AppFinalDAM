@@ -4,6 +4,8 @@ import sys
 import subprocess
 import PySimpleGUI as sg
 
+sg.theme('DarkGrey6')
+
 
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
@@ -24,7 +26,7 @@ def goBack():
 
 
 layout = [[
-    [sg.Text('PRODUCTS', font=('Any 17 underline'))],
+    [sg.Text('PROVIDERS', font=('Any 17 underline'))],
     [sg.VPush()],
     [sg.Button('CREATE PROVIDER', key='createProvider', size=(40,1))],
     [sg.Button('SHOW PROVIDER', key='showProvider', size=(40,1))],
@@ -36,7 +38,7 @@ layout = [[
 ]
 
 
-window = sg.Window('PROVIDERS', layout, size=(600,250), element_justification='c')
+window = sg.Window('PROVIDERS', layout, size=(600,250), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 
 while True:             

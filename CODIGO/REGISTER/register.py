@@ -4,6 +4,11 @@ import subprocess
 import PySimpleGUI as sg
 import os
 
+from pathlib import Path
+import sys
+path_root = Path(__file__).parents[2]
+sys.path.append(str(path_root))
+from CODIGO.BD import queryFunctions
 
 
 absolutepath = os.path.abspath(__file__)
@@ -12,7 +17,7 @@ listaAdminKeys = ["superduperadmin", "adminincreible", "megasuperadmin"]
 
 # userQuestion.index(values['questionSecurityText']) -> Nos da el index de la pregunta para insertar en la base de datos
 
-sg.theme('DarkAmber')  
+sg.theme('DarkGrey6')
 
 def createUser():
     if values['nameText'] == '' or values['surnameText'] == '' or values['usernameText'] == '' or values['passwordText'] == '' or values['emailText'] == '':
@@ -20,37 +25,40 @@ def createUser():
     else:
         try:
             sqliteConnection = sqlite3.connect(os.path.join(absolutepath, '..\\..\\..\\CODIGO\\BD\\emz.db'))
-            print(sqliteConnection)
             cursor = sqliteConnection.cursor()
-            print("Connected to BD")
 
             sqlite_getUser_query = """SELECT * FROM USUARIOS WHERE username = '%s' or correo = '%s'"""
-            try:
-                cursor.execute(sqlite_getUser_query % (values['usernameText'], values['emailText']))
-                records = cursor.fetchall()
+            
+            salidagetuser = queryFunctions.selectBD(sqlite_getUser_query % (values['usernameText'], values['emailText']))
+                        
+            if len(salidagetuser) > 0:
+                sg.Popup('This username or mail aready exists')
+            else:
+                try:
+                    cursor.execute(sqlite_getUser_query % (values['usernameText'], values['emailText']))
+                    records = cursor.fetchall()
 
-                if len(records) == 0:
-                    sqlite_createUser_query = """INSERT INTO USUARIOS (nombre, apellidos, username, password, correo, 
-                    tipouser) VALUES ('%s', '%s', '%s', '%s', '%s', %s) """
-                    
-                    if values['adminKey'] in listaAdminKeys:
-                        valorAdmin = 1
-                    else:
-                        valorAdmin = 2
+                    if len(records) == 0:
+                        sqlite_createUser_query = """INSERT INTO USUARIOS (nombre, apellidos, username, password, correo, 
+                        tipouser) VALUES ('%s', '%s', '%s', '%s', '%s', %s) """
+                        
+                        if values['adminKey'] in listaAdminKeys:
+                            valorAdmin = 1
+                        else:
+                            valorAdmin = 2
 
-                    sqlite_createUser_query = sqlite_createUser_query % (values['nameText'],values['surnameText'],values['usernameText'], values['passwordText'], values['emailText'], valorAdmin)
-                    print(sqlite_createUser_query)
+                        sqlite_createUser_query = sqlite_createUser_query % (values['nameText'],values['surnameText'],values['usernameText'], values['passwordText'], values['emailText'], valorAdmin)
 
-                    cursor.execute(sqlite_createUser_query)
+                        cursor.execute(sqlite_createUser_query)
 
-                    sqliteConnection.commit()
-                    cursor.close() 
+                        sqliteConnection.commit()
+                        cursor.close() 
 
-                    sg.popup("Usuario creado correctamente, %s" % (values['nameText'] + ' ' + values['surnameText'] + ' (' + values['usernameText'] + ')'), icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
-                    
-            except Exception as ex:
-                # lg.error(ex)
-                print(ex)
+                        sg.popup("Usuario creado correctamente, %s" % (values['nameText'] + ' ' + values['surnameText'] + ' (' + values['usernameText'] + ')'), icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
+                        
+                except Exception as ex:
+                    # lg.error(ex)
+                    print(ex)
 
         except Exception as ex:
             print(str(ex))

@@ -26,7 +26,7 @@ layout = [
     [sg.Button('BACK TO MENU', key='backToMenu', size=(20,1))]
 ]
 
-window = sg.Window('DELETE PRODUCTS', layout, size=(800,280), element_justification='c')
+window = sg.Window('DELETE PRODUCTS', layout, size=(800,280), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 while True:   
     window.refresh()          
@@ -37,20 +37,20 @@ while True:
         event()
     elif event == 'deleteOne':
         try:
-            eliminarCliente(getValores().values.tolist()[values['table'][0]][0])
-            window['table'].update(getValores().values.tolist())
+            if len(values['table']) != 0:
+                eliminarCliente(getValores().values.tolist()[values['table'][0]][0])
+                window['table'].update(getValores().values.tolist())
+            else:
+                sg.Popup('You must select one product on the table')
         except Exception as ex:
             print(ex)
     elif event == 'deleteAll':
-        print('Eliminar todos')
         salida = sg.popup_yes_no('Do you want to delete all? This action can not be undone', title='Delete All')
-        print(salida)
         if salida == 'Yes':
             queryFunctions.updateBD('DELETE FROM PRODUCTOS')
             window['table'].update(getValores().values.tolist())
 
     elif event == 'backToMenu':
-        print('Back to menu')
         window.close()
         subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENUS\\menuProductos.py')])
 

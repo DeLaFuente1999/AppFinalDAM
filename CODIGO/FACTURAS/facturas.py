@@ -11,6 +11,8 @@ sys.path.append(str(path_root))
 absolutepath = os.path.abspath(__file__)
 from CODIGO.BD import queryFunctions
 
+sg.theme('DarkGrey6')
+
 
 clientes = list(queryFunctions.selectBD('SELECT NOMBRE FROM CLIENTES')['nombre'])
 providers = queryFunctions.selectBD('SELECT nombre, cif FROM PROVEEDORES')
@@ -96,7 +98,6 @@ while True:             # Event Loop
     if callable(event):
         event()
     elif event == 'providersCombo':
-        print(values['providersCombo'])
         items1 = getItems(values['providersCombo'])
         window['items'].update(items1)
         productos = []

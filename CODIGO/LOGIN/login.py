@@ -9,19 +9,16 @@ absolutepath = os.path.abspath(__file__)
 bd = os.path.join(absolutepath, '..\\..\\..\\CODIGO\\BD\\emz.db')
 tempFolder = tempfile.gettempdir()
 
-sg.theme('DarkAmber')
+sg.theme('DarkGrey6')
 
 def loginApp():
     try:
         sqliteConnection = sqlite3.connect(bd)
-        print(sqliteConnection)
         cursor = sqliteConnection.cursor()
-        print("Connected to SQLite")
 
 
         sqlite_select_query = """SELECT username, password, tipouser FROM USUARIOS where username = "%s" AND password = "%s" """
         sqlite_select_query = sqlite_select_query % (values['usernameText'], values['passwordText'])
-        print(sqlite_select_query)
 
 
         cursor.execute(sqlite_select_query)
@@ -29,7 +26,7 @@ def loginApp():
 
 
         if len(records) > 0:
-            sg.popup("Bienvenido, %s" % values['usernameText'])
+            sg.popup("Welcome, %s" % values['usernameText'])
                         
             if os.path.isfile(os.path.join(tempFolder, 'login.txt')):            
                 f = open(os.path.join(tempFolder, 'login.txt'), "w")
@@ -45,7 +42,7 @@ def loginApp():
             subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENU\\mainMenu.py')])
 
         else:
-            sg.popup("Error, usuario o contraseña incorrectos")
+            sg.popup("Error, incorrect user or password")
  
         cursor.close()
 
@@ -69,7 +66,7 @@ layout = [
         ]
 
 # Create the Window
-window = sg.Window('Login', layout, element_justification='c')
+window = sg.Window('Login', layout, element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 # Event Loop to process "events" and get the "values" of the inputs
 

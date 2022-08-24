@@ -12,10 +12,7 @@ from datetime import datetime
 
 absolutepath = os.path.abspath(__file__)
 
-print(*argv)
-
-
-sg.theme('DarkAmber')  
+sg.theme('DarkGrey6')
 
 layout = [  
             [sg.Text('RESET PASSWORD', font=('Any 17 underline'))],
@@ -36,31 +33,28 @@ def resetPassword():
             if values['newpass'] == values['renewpass']:
                 try:
                     sqliteConnection = sqlite3.connect(os.path.join(absolutepath, '..\\..\\..\\CODIGO\\BD\\emz.db'))
-                    print(sqliteConnection)
                     cursor = sqliteConnection.cursor()
-                    print("Connected to SQLite")
 
                     sqlite_updateUser_query = """UPDATE usuarios set password = '%s' where username = '%s';"""
 
                     sqlite_updateUser_query = sqlite_updateUser_query % ( values['newpass'], user)
-                    print(sqlite_updateUser_query)
 
                     cursor.execute(sqlite_updateUser_query)
                     sqliteConnection.commit()
 
-                    sg.popup("Contraseña cambiada correctamente", icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
+                    sg.popup("Password correctly changed", icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
                     cursor.close()
 
                     return True
 
                 except Exception as ex:
-                    sg.popup("ERROR", icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
+                    sg.popup("Error detected on password change", icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
                     return False
         else:
-            sg.popup("FALTAN CAMPOS", icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
+            sg.popup("All fields must be filled", icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
     else:
-        sg.popup("EL CODIGO NO COINCIDE CON EL RECIBIDO", icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
+        sg.popup("The code is incorrect", icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 
 def launchLogin():

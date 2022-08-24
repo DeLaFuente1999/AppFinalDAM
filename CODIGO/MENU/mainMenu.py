@@ -6,6 +6,7 @@ import tempfile
 tempFolder = tempfile.gettempdir()
 admin = False
 
+sg.theme('DarkGrey6')
 
 absolutepath = os.path.abspath(__file__)
 
@@ -30,28 +31,28 @@ def launchMenuProductos():
 layout = [
     [sg.Text('MAIN MENU', font=('Any 17 underline'))],
     [sg.VPush()],
-    [sg.Button('CLIENTES', key='menuClientes', size=(40,1))],
-    [sg.Button('PRODUCTOS', key='menuProductos', size=(40,1))],
-    [sg.Button('PROVEEDORES', key='menuProveedores', size=(40,1))],
-    [sg.Button('FACTURAS', key='menuFacturas', size=(40,1))],
+    [sg.Button('CLIENTS', key='menuClientes', size=(40,1))],
+    [sg.Button('PRODUCTS', key='menuProductos', size=(40,1))],
+    [sg.Button('PROVIDERS', key='menuProveedores', size=(40,1))],
+    [sg.Button('INVOICES', key='menuFacturas', size=(40,1))],
     [sg.VPush()]
 ]
 
 layoutAdmin = [
     [sg.Text('MAIN MENU', font=('Any 17 underline'))],
     [sg.VPush()],
-    [sg.Button('CLIENTES', key='menuClientes', size=(40,1))],
-    [sg.Button('PRODUCTOS', key='menuProductos', size=(40,1))],
-    [sg.Button('PROVEEDORES', key='menuProveedores', size=(40,1))],
-    [sg.Button('FACTURAS', key='menuFacturas', size=(40,1))],
-    [sg.Button('USUARIOS', key='usuarios', size=(40,1))],
+    [sg.Button('CLIENTS', key='menuClientes', size=(40,1))],
+    [sg.Button('PRODUCTS', key='menuProductos', size=(40,1))],
+    [sg.Button('PROVIDERS', key='menuProveedores', size=(40,1))],
+    [sg.Button('INVOICES', key='menuFacturas', size=(40,1))],
+    [sg.Button('USERS', key='usuarios', size=(40,1))],
     [sg.VPush()]
 ]
 
 if admin == True:
-    window = sg.Window('MAIN MENU', layoutAdmin, size=(600,280), element_justification='c')
+    window = sg.Window('MAIN MENU', layoutAdmin, size=(600,280), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 else:
-    window = sg.Window('MAIN MENU', layout, size=(600,250), element_justification='c')
+    window = sg.Window('MAIN MENU', layout, size=(600,250), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 
 
@@ -74,6 +75,5 @@ while True:
     elif event == 'menuFacturas':
         window.close()
         subprocess.call(['python', os.path.join(absolutepath, '..\\..\\FACTURAS\\facturas.py')])
-        print(1)
     elif event == 'usuarios':
         subprocess.call(['python', os.path.join(absolutepath, '..\\..\\USERS\\users.py')])

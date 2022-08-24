@@ -23,7 +23,7 @@ folderpath2 = os.path.dirname(absolutepath)
 from CODIGO.LOGS import logs
 from CODIGO.BD import queryFunctions
 
-sg.theme('Dark Amber')
+sg.theme('DarkGrey6')
 
 try:
     productos = queryFunctions.selectBD('SELECT * FROM productos')
@@ -32,12 +32,11 @@ try:
         productos= pd.DataFrame(productos)        
 
 except Exception as ex:
-    sg.Popup('Error al recuperar los productos de la base de datos')
+    sg.Popup('Error retrieving products from database')
     
     
 maxItems = len(productos)
 contador = 0
-print(contador)
 
 def setImagen(imagen):
     mywidth = 250
@@ -65,9 +64,7 @@ def setImagen(imagen):
 def showNextProduct():
     global contador
     global productos
-    if (contador + 1) == maxItems:
-        print(maxItems)
-    else:
+    if (contador + 1) != maxItems:
         contador = contador + 1
         
     window['productName'].update(productos.iloc[contador]['nombre'])
@@ -77,38 +74,32 @@ def showNextProduct():
     window['productCif'].update(productos.iloc[contador]['proveedorCif'])
     window['imagen'].update(setImagen(os.path.join(folderpath, '..\\..\\DATA\\' + productos.iloc[contador]['image'])))
 
-    print(contador)
-
 def showLastProduct():
     global contador
-    if (contador) == 0:
-        print(0)
-    else:
+    if (contador) != 0:
         contador = contador - 1
-
+        
     window['productName'].update(productos.iloc[contador]['nombre'])
     window['productDescription'].update(productos.iloc[contador]['descripcion'])
     window['productReference'].update(productos.iloc[contador]['referencia'])
     window['productPrize'].update(productos.iloc[contador]['precio'])
     window['productCif'].update(productos.iloc[contador]['proveedorCif'])
     
-    print(contador)
-
 layout = [[
     [
         sg.Text('SHOW PRODUCT', font=('Any 17 underline'))
     ],[
         sg.Column(layout=[
             [sg.Text('PRODUCT NAME:')],
-            [sg.InputText(key='productName', disabled_readonly_background_color='#705e52', readonly=True, use_readonly_for_disable=True, default_text=productos.iloc[contador]['nombre'])],
+            [sg.InputText(key='productName', disabled_readonly_background_color='#68868c', readonly=True, use_readonly_for_disable=True, default_text=productos.iloc[contador]['nombre'])],
             [sg.Text('PRODUCT DESCRIPTION:')],
-            [sg.InputText(key='productDescription', disabled_readonly_background_color='#705e52', readonly=True, default_text=productos.iloc[contador]['descripcion'])],
+            [sg.InputText(key='productDescription', disabled_readonly_background_color='#68868c', readonly=True, default_text=productos.iloc[contador]['descripcion'])],
             [sg.Text('PRODUCT REFERENCE:')],
-            [sg.InputText(key='productReference', disabled_readonly_background_color='#705e52', readonly=True, default_text=productos.iloc[contador]['referencia'])],
+            [sg.InputText(key='productReference', disabled_readonly_background_color='#68868c', readonly=True, default_text=productos.iloc[contador]['referencia'])],
             [sg.Text('PRODUCT PRICE:')],
-            [sg.InputText(key='productPrize', disabled_readonly_background_color='#705e52', readonly=True, default_text=productos.iloc[contador]['precio'])],
+            [sg.InputText(key='productPrize', disabled_readonly_background_color='#68868c', readonly=True, default_text=productos.iloc[contador]['precio'])],
             [sg.Text('PRODUCT PROVIDER:')],
-            [sg.InputText(key='productCif', disabled_readonly_background_color='#705e52', readonly=True, default_text=productos.iloc[contador]['proveedorCif'])],
+            [sg.InputText(key='productCif', disabled_readonly_background_color='#68868c', readonly=True, default_text=productos.iloc[contador]['proveedorCif'])],
             [sg.Column(layout=[[sg.Button('PREVIOUS', key='previousProduct', size=(10,1)), sg.Text(f'{contador + 1} of {maxItems}',key='productCount'),sg.Button('NEXT', key='nextProduct', size=(10,1))]])],
         ], element_justification='c')
         ,sg.Column(layout=[
@@ -120,7 +111,7 @@ layout = [[
         
     ]
 
-window = sg.Window('SHOW PRODUCT', layout, size=(700,400), element_justification='c')
+window = sg.Window('SHOW PRODUCT', layout, size=(700,400), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 
 while True:             

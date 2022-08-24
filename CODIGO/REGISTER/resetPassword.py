@@ -35,7 +35,6 @@ def changePassword(email, pwd, pwdNew1, pwdNew2):
     if not email == '' or pwd == '' or pwdNew1 == '' or pwdNew2 == '':
         if pwdNew1 == pwdNew2:
             sqlite_updatePassword_query = 'UPDATE usuarios SET password = "' + pwdNew1 + '" WHERE correo = "' + email + '" AND password = "' + pwd + '"'
-            print( sqlite_updatePassword_query)
 
             queryFunctions.updateBD(sqlite_updatePassword_query)
             
@@ -53,14 +52,10 @@ def sendPassResetRequest(username, code, mail):
 
         try:
             sqliteConnection = sqlite3.connect(bd)
-            print(sqliteConnection)
             cursor = sqliteConnection.cursor()
-            print("Connected to SQLite")
-
 
             sqlite_select_query = """select * from usuarios where username = "%s" and correo = "%s" """
             sqlite_select_query = sqlite_select_query % (username, mail)
-            print(sqlite_select_query)
 
             cursor.execute(sqlite_select_query)
             records = cursor.fetchall()

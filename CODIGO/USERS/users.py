@@ -89,7 +89,7 @@ layout = [
     [sg.Button('BACK TO MENU', key='backToMenu', size=(20,1), pad=(10,10,10,1))]
 ]
 
-window = sg.Window('USERS MANAGEMENT', layout, size=(800,510), element_justification='c')
+window = sg.Window('USERS MANAGEMENT', layout, size=(800,510), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 while True:   
     window.refresh()          
@@ -106,7 +106,6 @@ while True:
             print(ex)
 
     elif event == 'backToMenu':
-        print('Back to menu')
         window.close()
         subprocess.call(['python', os.path.join(absolutepath, '..\\..\\MENU\\mainMenu.py')])
 

@@ -28,20 +28,17 @@ try:
 
 
 except Exception as ex:
-    sg.Popup('Error al recuperar los proveedores de la base de datos')
+    sg.Popup('Error retrieving providers from database')
     
     
 maxItems = len(proveedores)
 contador = 0
-print(contador)
 
 
 def showNextProvider():
     global contador
     global proveedores
-    if (contador + 1) == maxItems:
-        print(maxItems)
-    else:
+    if (contador + 1) != maxItems:
         contador = contador + 1
         
     window['providerName'].update(proveedores.iloc[contador]['nombre'])
@@ -53,11 +50,9 @@ def showNextProvider():
     
 def showLastProvider():
     global contador
-    if (contador) == 0:
-        print(0)
-    else:
+    if (contador) != 0:
         contador = contador - 1
-
+        
     window['providerName'].update(proveedores.iloc[contador]['nombre'])
     window['providerCif'].update(proveedores.iloc[contador]['cif'])
     window['providerPhone'].update(proveedores.iloc[contador]['telefono'])
@@ -71,17 +66,17 @@ layout = [[
     ],[
         sg.Column(layout=[
             [sg.Text('PROVIDER NAME:')],
-            [sg.InputText(key='providerName', readonly=True, disabled_readonly_background_color='#705e52', use_readonly_for_disable=True, default_text=proveedores.iloc[contador]['nombre'])],
+            [sg.InputText(key='providerName', readonly=True, disabled_readonly_background_color='#68868c', use_readonly_for_disable=True, default_text=proveedores.iloc[contador]['nombre'])],
             [sg.Text('PHONE NUMBER:')],
-            [sg.InputText(key='providerCif' , disabled_readonly_background_color='#705e52', readonly=True, default_text=proveedores.iloc[contador]['cif'])],
+            [sg.InputText(key='providerCif' , disabled_readonly_background_color='#68868c', readonly=True, default_text=proveedores.iloc[contador]['cif'])],
             [sg.Text('CLIENT ADDRESS:')],
-            [sg.InputText(key='providerPhone', disabled_readonly_background_color='#705e52', readonly=True, default_text=proveedores.iloc[contador]['telefono'])],
+            [sg.InputText(key='providerPhone', disabled_readonly_background_color='#68868c', readonly=True, default_text=proveedores.iloc[contador]['telefono'])],
             [sg.Text('CLIENT EMAIL:')],
-            [sg.InputText(key='providerMail', disabled_readonly_background_color='#705e52', readonly=True, default_text=proveedores.iloc[contador]['email'])],
+            [sg.InputText(key='providerMail', disabled_readonly_background_color='#68868c', readonly=True, default_text=proveedores.iloc[contador]['email'])],
             [sg.Text('CLIENT EMAIL:')],
-            [sg.InputText(key='providerAddress', disabled_readonly_background_color='#705e52', readonly=True, default_text=proveedores.iloc[contador]['direccion'])],
+            [sg.InputText(key='providerAddress', disabled_readonly_background_color='#68868c', readonly=True, default_text=proveedores.iloc[contador]['direccion'])],
             [sg.Text('CLIENT EMAIL:')],
-            [sg.InputText(key='providerAccount', disabled_readonly_background_color='#705e52', readonly=True, default_text=proveedores.iloc[contador]['cuentabanco'])],
+            [sg.InputText(key='providerAccount', disabled_readonly_background_color='#68868c', readonly=True, default_text=proveedores.iloc[contador]['cuentabanco'])],
             [sg.Column(layout=[[sg.Button('PREVIOUS', key='previousProvider', size=(10,1)), sg.Text(f'{contador + 1} of {maxItems}',key='providerCount'),sg.Button('NEXT', key='nextProvider', size=(10,1))]])],
         ], element_justification='c')
         ],
@@ -91,7 +86,7 @@ layout = [[
     ]
 ]
 
-window = sg.Window('SHOW CLIENT', layout, size=(700,450), element_justification='c')
+window = sg.Window('SHOW PROVIDERS', layout, size=(700,450), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 
 while True:             

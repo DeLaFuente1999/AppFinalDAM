@@ -19,7 +19,7 @@ sys.path.append(str(path_root))
 from CODIGO.LOGS import logs
 from CODIGO.BD import queryFunctions
 
-sg.theme('Dark Amber')
+sg.theme('DarkGrey6')
 
 try:
     clientes = queryFunctions.selectBD('SELECT * FROM clientes')
@@ -27,20 +27,17 @@ try:
         clientes = {'nombre': ['NO DATA'], 'telefono': ['NO DATA'], 'direccion': ['NO DATA'],'correoelectronico': ['NO DATA']}
         clientes= pd.DataFrame(clientes)
 except Exception as ex:
-    sg.Popup('Error al recuperar los clientes de la base de datos')
+    sg.Popup('Error retrieving clients from database')
     
     
 maxItems = len(clientes)
 contador = 0
-print(contador)
-
 
 def showNextClient():
     global contador
     global clientes
-    if (contador + 1) == maxItems:
-        print(maxItems)
-    else:
+    
+    if (contador + 1) != maxItems:
         contador = contador + 1
         
     window['clientName'].update(clientes.iloc[contador]['nombre'])
@@ -48,35 +45,30 @@ def showNextClient():
     window['clientAddress'].update(clientes.iloc[contador]['direccion'])
     window['clientEmail'].update(clientes.iloc[contador]['correoelectronico'])
     
-    print(contador)
 
 def showLastClient():
     global contador
-    if (contador) == 0:
-        print(0)
-    else:
+    if (contador) != 0:
         contador = contador - 1
-
+        
     window['clientName'].update(clientes.iloc[contador]['nombre'])
     window['clientPhone'].update(clientes.iloc[contador]['telefono'])
     window['clientAddress'].update(clientes.iloc[contador]['direccion'])
     window['clientEmail'].update(clientes.iloc[contador]['correoelectronico'])
     
-    print(contador)
-
 layout = [[
     [
         sg.Text('SHOW CLIENT', font=('Any 17 underline'))
     ],[
         sg.Column(layout=[
             [sg.Text('CLIENT NAME:')],
-            [sg.InputText(key='clientName', readonly=True, disabled_readonly_background_color='#705e52', use_readonly_for_disable=True, default_text=clientes.iloc[contador]['nombre'])],
+            [sg.InputText(key='clientName', readonly=True, disabled_readonly_background_color='#68868c', use_readonly_for_disable=True, default_text=clientes.iloc[contador]['nombre'])],
             [sg.Text('PHONE NUMBER:')],
-            [sg.InputText(key='clientPhone', readonly=True, disabled_readonly_background_color='#705e52', default_text=clientes.iloc[contador]['telefono'])],
+            [sg.InputText(key='clientPhone', readonly=True, disabled_readonly_background_color='#68868c', default_text=clientes.iloc[contador]['telefono'])],
             [sg.Text('CLIENT ADDRESS:')],
-            [sg.InputText(key='clientAddress', readonly=True, disabled_readonly_background_color='#705e52', default_text=clientes.iloc[contador]['direccion'])],
+            [sg.InputText(key='clientAddress', readonly=True, disabled_readonly_background_color='#68868c', default_text=clientes.iloc[contador]['direccion'])],
             [sg.Text('CLIENT EMAIL:')],
-            [sg.InputText(key='clientEmail', readonly=True, disabled_readonly_background_color='#705e52', default_text=clientes.iloc[contador]['correoelectronico'])],
+            [sg.InputText(key='clientEmail', readonly=True, disabled_readonly_background_color='#68868c', default_text=clientes.iloc[contador]['correoelectronico'])],
             [sg.Column(layout=[[sg.Button('PREVIOUS', key='previousClient', size=(10,1)), sg.Text(f'{contador + 1} of {maxItems}',key='clientCount'),sg.Button('NEXT', key='nextClient', size=(10,1))]])],
             [sg.Button('BACK TO MENU', key='backMenu', size=(20,1))]
 
@@ -85,12 +77,10 @@ layout = [[
     ]
 ]
 
-window = sg.Window('SHOW CLIENT', layout, size=(700,330), element_justification='c')
+window = sg.Window('SHOW CLIENT', layout, size=(700,330), element_justification='c',icon=os.path.join(absolutepath, '..\\..\\..\\RESOURCES\\AppIcon\\icon.ico'))
 
 
 while True:             
-    
-
     
     event, values = window.read()
     
